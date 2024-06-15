@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="row w-100">
+            <div class="col-lg-6 mx-auto">
+                <div class="card p-4">
+                    <h2 class="text-center">Login</h2>
+                    <form id="loginForm">
+                        <!-- Form fields -->
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Login</button>
+                        <div id="errorMessage" class="text-danger mt-3"></div> <!-- Error message container -->
+                        <div id="verificationStatus" class="mt-3"></div> <!-- Verification status container -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form data
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Send form data to backend
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            })
+            .then(response => {
+                // Check the response status
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    // Handle error response
+                    throw new Error('Login failed');
+                }
+            })
+            .then(data => {
+                // Handle response from backend
+                if (data.error) {
+                    // If backend returns an error
+                    document.getElementById('errorMessage').textContent = data.error; // Display error message returned by backend
+                    document.getElementById('verificationStatus').textContent = ''; // Clear verification status
+                } else {
+                    // If login is successful
+                    document.getElementById('errorMessage').textContent = ''; // Clear any previous error messages
+                    if (data.msg && data.msg.includes('Email not verified')) {
+                        document.getElementById('verificationStatus').textContent = 'Email not verified';
+                    } else {
+                        document.getElementById('verificationStatus').textContent = 'Verified';
+                        // Redirect to the dashboard and display welcome message
+                        window.location.href = '/dashboard.html'; // Example: Redirect to dashboard page
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error); // Log error for debugging
+                document.getElementById('errorMessage').textContent = 'An error occurred while logging in.'; // Display generic error message
+                document.getElementById('verificationStatus').textContent = ''; // Clear verification status
+            });
+        });
+    </script>
+</body>
+</html>
