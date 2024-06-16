@@ -42,14 +42,14 @@ const signinController = {
       // Generate JWT token
       const token = jwt.sign({ userId: user.id, lastActivity: Date.now() }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-      const hashedToken = await bcrypt.hash(token, 10);
+      // const hashedToken = await bcrypt.hash(token, 10);
 
       const { password: pass, ...rest } = user._doc;
 
       // Set token as cookie
       res.cookie("access_token", token, { httpOnly: true, secure: true, sameSite: 'Strict'})
         .status(200)
-        .json({...rest, token: hashedToken});
+        .json({...rest, token});
 
     } catch (err) {
       console.error(err.message);

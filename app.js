@@ -17,7 +17,7 @@ const transactionHistroyRoute = require('./src/routes/transactionHistory');
 const verifyEmailRoute = require('./src/routes/emailVerificationRoute');
 const verifyTokenRoute = require('./src/routes/verifyTokenRoute');
 const verifyHawkPinRoute = require('./src/routes/verifyHawkPinRoute');
-const resetHawkPinRouth = require('./src/routes/resetHawkPinRoute');
+const resetHawkPinRoute = require('./src/routes/resetHawkPinRoute');
 const globalExceptionHandler = require('./src/middlewares/globalExceptionHandler');
 const checkInactivity = require('./src/middlewares/checkInactivity');
 
@@ -66,7 +66,7 @@ app.use("/api/auth", signupRoute);
 app.use("/api/auth", verifyEmailRoute);
 app.use("/api/auth", verifyTokenRoute);
 app.use("/api/auth", verifyHawkPinRoute);
-app.use("/api/auth", resetHawkPinRouth);
+app.use("/api/auth", resetHawkPinRoute);
 app.use(resetPasswordRoute);
 app.use(verificationRoute);
 app.use(getBalanceRoute);

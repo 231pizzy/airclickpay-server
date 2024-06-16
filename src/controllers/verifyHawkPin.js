@@ -9,7 +9,7 @@ const verifyHawkPin = async (req, res) => {
     const token = req.cookies.access_token;
 
     if (!token) {
-      return res.status(401).redirect('/signin');
+      return res.status(401).json({ msg: 'No token provided. Please log in.' });
     }
 
     let userId;
@@ -19,7 +19,7 @@ const verifyHawkPin = async (req, res) => {
     } catch (err) {
       console.error(err);
       res.clearCookie('access_token');
-      return res.status(401).redirect('/login');
+      return res.status(401).json({ msg: 'No token provided. Please log in.' });
     }
 
     console.log("user Id:", userId);
