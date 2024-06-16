@@ -42,8 +42,6 @@ const signinController = {
       // Generate JWT token
       const token = jwt.sign({ userId: user.id, lastActivity: Date.now() }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-      // const hashedToken = await bcrypt.hash(token, 10);
-
       const { password: pass, ...rest } = user._doc;
 
       // Set token as cookie
